@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 # Create your views here.
+from app.models import Movie
+
+
 def index(request):
     # return HttpResponse('hi')
     # return render(request, 'base.html')
