@@ -63,7 +63,9 @@ class Movie(models.Model):
     is_sidebar = models.BooleanField('侧边栏推荐展示', default=0)  # 是否侧边栏推荐展示，默认False
     country = models.ForeignKey('Country', on_delete=models.DO_NOTHING, verbose_name='国家/地区')  # 外键关联
 
-    style_type = models.ManyToManyField(StyleType, verbose_name='风格类型')
+    style_type = models.ManyToManyField(StyleType, verbose_name='风格类型')  # 多对多关联
+    lead_role = models.ManyToManyField(LeadRole, verbose_name='主演')  # 多对多关联
+    like = models.ManyToManyField(User, verbose_name='喜欢')
 
 class Comment(models.Model):
     comment_content = models.TextField()  # 评论内容

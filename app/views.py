@@ -33,3 +33,7 @@ def index(request):
                                           'recommend_list':recommend_list,
                                           'username':usernameKey,
                                         })
+
+
+def single(request):
+    return None
