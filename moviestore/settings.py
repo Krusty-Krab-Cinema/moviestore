@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'moviestore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'bbs_a',
+        'NAME':'maoyan',
         'HOST':'152.136.104.104',
         'USER':'root',
         'PASSWORD':'dyvan1013',
