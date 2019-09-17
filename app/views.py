@@ -34,12 +34,7 @@ def index(request):
                                           'username':usernameKey,
                                         })
 
-
 def comment(request):
-    return None
-
-
-def single(request):
     return None
 
 
