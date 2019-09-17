@@ -1,0 +1,157 @@
+{% load static from staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>蟹老板--一个神奇的电影网</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="Movie_store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- start plugins -->
+    <script type="text/javascript" src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <!--{#    <link href='http://fonts.useso.com/css?family=Roboto+Condensed:100,200,300,400,500,600,700,800,900' rel='stylesheet'#}-->
+    <!--{#          type='text/css'>#}-->
+
+    <!--css-->
+    {% block styles %}
+        <style>a {
+            text-decoration: none
+        }</style>
+
+    {% endblock %}
+
+
+
+
+
+    <script src="{% static 'js/responsiveslides.min.js' %}"></script>
+    <script>
+        $(function () {
+            $("#slider").responsiveSlides({
+                auto: true,
+                nav: true,
+                speed: 500,
+                namespace: "callbacks",
+                pager: true,
+            });
+        });
+    </script>
+
+    <!--js-->
+    {% block scripts %}
+    {% endblock %}
+
+</head>
+<body>
+<div class="container">
+    <div class="container_wrap">
+        <div class="header_top">
+            <div class="col-sm-3 logo">
+                <a href="/" style="font-size: 26px; text-decoration: none; color: #D8232A">
+                    <img src="{% static 'images/logo11.png' %}" alt="" width="70px"/>
+                    <img src="{% static 'images/logo1.png' %}" alt="" width="100px"/>
+                </a>
+            </div>
+            <div class="col-sm-6 nav">
+                <ul class="nav nav-tabs nav-justified" style="margin-top: 15px ;font-size: 15px;">
+                    <li><span class="simptip-position-bottom simptip-movable" data-tooltip="最新"><a
+                            href="/movie/2/">最新 </a> </span></li>
+                    <li><span class="simptip-position-bottom simptip-movable" data-tooltip="高分"><a
+                            href="/movie/4/">高分 </a></span></li>
+                    <li><span class="simptip-position-bottom simptip-movable" data-tooltip="华语"><a
+                            href="/movie/5/">华语 </a></span></li>
+                    <li><span class="simptip-position-bottom simptip-movable" data-tooltip="欧美"><a
+                            href="/movie/6/">欧美 </a></span></li>
+                    <li><span class="simptip-position-bottom simptip-movable" data-tooltip="韩国"><a
+                            href="/movie/7/">韩国 </a></span></li>
+                    <li><span class="simptip-position-bottom simptip-movable" data-tooltip="日本"><a
+                            href="/movie/8/">日本 </a></span></li>
+                    <li><span class="simptip-position-bottom simptip-movable" data-tooltip="更多"><a
+                            href="/movie/9/">更多 </a></span></li>
+                </ul>
+            </div>
+            <div class="col-sm-3 header_right">
+                <ul class="header_right_box">
+                    {% block mine %}
+
+                    {% endblock %}
+
+                    <div class="clearfix"></div>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        {#        轮播图#}
+        {% block coverpic %}
+        {% endblock %}
+
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<div class="container">
+    <footer id="footer">
+        <div id="footer-3d">
+            <div class="gp-container">
+                <span class="first-widget-bend"></span>
+            </div>
+        </div>
+        <div id="footer-widgets" class="gp-footer-larger-first-col">
+            <div class="gp-container">
+                <div class="footer-widget footer-1">
+                    <div class="wpb_wrapper">
+                        {#                        <img src="{% static 'images/f_logo.png' %}" alt=""/>#}
+                        <span style="font-size: 26px">See视频</span>
+                    </div>
+                    <br>
+                    <p>我还不够完美</p>
+                    <p class="text">所以需要继续努力</p>
+                </div>
+                <div class="footer_box">
+                    <div class="col_1_of_3 span_1_of_3">
+                        <h3>友链</h3>
+                        <ul class="first">
+                            <li><a href="http://blackkitty.org/">- BLACKKITTY</a></li>
+                        </ul>
+                    </div>
+                    <div class="col_1_of_3 span_1_of_3">
+                        <h3>关于丹丹</h3>
+                        <ul class="first">
+                            <li><a href="#">- 联盟</a></li>
+                            <li><a href="#">- 猫</a></li>
+                            {#                            <li><a href="#">Specials</a></li>#}
+                        </ul>
+                    </div>
+                    <div class="col_1_of_3 span_1_of_3">
+                        <h3>联系我</h3>
+                        <ul class="first">
+                            <li><a href="http://web2.qq.com/">- Q &nbsp;&nbsp;3124696713</a></li>
+                            <li><a href="#">- E &nbsp;&nbsp;Cute_dandan@163.com</a></li>
+                        </ul>
+                        <div class="copy">
+                            <p>Copyright &copy; 2017 <a target="_blank"
+                                                        href="http://idandan.vip/">丹丹的个人简介</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

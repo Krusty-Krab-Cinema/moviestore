@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div class="content">
+        <div class="register">
+            <div class="col-md-6 login-left">
+                <h3>新用户</h3>
+                <p>通过注册一个账号，可以方便的体验网站的更多功能。</p>
+                <a class="acount-btn" href="/register/">我要注册</a>
+            </div>
+            <div class="col-md-6 login-right">
+                <h3>登陆</h3>
+                <p>已有账号，直接登陆。</p>
+                <form method="post" action="/login/">
+                    <div>
+                        <span>用户名<label>*</label></span>
+                        <input type="text" name="nickname">
+                    </div>
+                    <div>
+                        <span>密码<label>*</label></span>
+                        <input type="password" name="password">
+                    </div>
+                    <a class="forgot" href="#">忘记密码?</a>
+                    <input type="submit" value="立即登陆">
+                </form>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block mine %}
+    <!--<li style="list-style-type: none"><img src="{% static 'images/p1.png' %}" alt=""/></li>-->
+    {% if username %}
+        <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+        <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+    {% else %}
+        <li style="list-style-type: none"><p><a href="/login/">立即登陆</a></p></li>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="content">
+        <div class="movie_top">
+            <div class="col-md-9 movie_box">
+                <div class="grid images_3_of_2">
+                    <div class="movie_image">
+                        <span class="movie_rating">{{ movie.mark }}</span>
+                        <img style="max-width: 287px; min-width: 287px; max-height: 390px; min-height: 390px"
+                             src="{{ movie.single_link }}" class="img-responsive" alt=""/>
+                    </div>
+                </div>
+                <div class="desc1 span_3_of_2">
+                    <p class="movie_option"><strong>地区: </strong><a href="#">{{ movie.country }}</a></p>
+                    <p class="movie_option"><strong>年份: </strong>{{ movie.release_time | date:'Y' }}</p>
+                    <p class="movie_option"><strong>类型:</strong>
+                        <!--多对多-->
+                        {% for type in movie.style_type.all %}
+                            <a href="#">{{ type.style_type }}&nbsp;/&nbsp;</a>
+                        {% endfor %}
+                    </p>
+                    <p class="movie_option"><strong>上映时间: </strong>{{ movie.release_time }}</p>
+                    <p class="movie_option"><strong>导演: </strong><a href="#">{{ movie.director }} </a></p>
+                    <p class="movie_option"><strong>演员: </strong>
+                        {% for role in movie.lead_role.all %}
+                            <a href="#">{{ role.name }}&nbsp;/&nbsp;</a>
+                        {% endfor %}
+                    </p>
+                    <div class="down_btn">
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#is_like').click(function () {
+                                    _this = this;
+                                    var movie_id = $('#is_like').attr('url');
+
+                                    if ($(_this).text() == '我要收藏') {
+                                        $.get('/like/', {'state': 0, 'movie_id': movie_id}, function (d) {
+                                            $(_this).text('取消收藏');
+                                        })
+
+                                    } else {
+                                        $.get('/like/', {'state': 1, 'movie_id': movie_id}, function (d) {
+                                            $(_this).text('我要收藏');
+                                        })
+
+                                    }
+                                })
+                            })
+                        </script>
+                        {% if username %}
+                            <a id="is_like" url="{{ movie.id }}" class="btn1" href="#"
+                               {% if is_like %}style="background-color: #3f444e"{% endif %}>{% if is_like %}
+                                取消收藏{% else %}我要收藏{% endif %}</a>
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <p class="m_4">{{ movie.summary }}</p>
+                {% if username %}
+                    <form method="post" action="/comment/{{ movie.id }}/">
+                        <div class="text">
+                                <textarea value="评论:" onfocus="this.value = '';"
+                                          onblur="if (this.value == '') {this.value = '评论';}"
+                                          name="comment">评论:</textarea>
+                        </div>
+                        <div class="form-submit1">
+                            <input name="submit" type="submit" id="submit" value="提交评论"><br>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                {% endif %}
+                <div class="single">
+                    <h1>{{ comment_list_count }} 条评论</h1>
+                    <ul class="single_list">
+                        {% for comment in comment_list %}
+                            <li>
+                                <!--<div class="preview"><a href="#">-->
+                                <!--<img src="{% static 'images/2.jpg' %}" class="img-responsive" alt=""></a>-->
+                                <!--</div>-->
+                                <div class="data">
+                                    <div class="title">{{ comment.user_id.username }}
+                                        / {{ comment.comment_time | date:'Y-m-d' }}</div>
+                                    <p>{{ comment.comment_content }}</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                {% for side in side_recommend %}
+                    <div class="grid_2 col_1">
+                        <a href="/single/{{ side.id }}/"><img style="width: 241px; height: 222px;"
+                                                              src="{{ side.new_link }}" class="img-responsive"
+                                                              alt=""></a>
+                        <div class="caption1">
+                            <ul class="list_3 list_7">
+                                <li><i class="icon5"> </i>
+                                    <p>{{ side.like_count }}</p></li>
+                            </ul>
+                            <a href="/single/{{ side.id }}/"><p class="m_3">{{ side.name }}</p></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endblock %}
