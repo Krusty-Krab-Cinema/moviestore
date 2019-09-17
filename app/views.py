@@ -34,6 +34,29 @@ def index(request):
                                           'username':usernameKey,
                                         })
 
+def comment(request):
+    return None
 
-def single(request):
+
+def movie(request):
+    return None
+
+
+def like(request):
+    return None
+
+
+def login(request):
+    return None
+
+
+def register(request):
+    return None
+
+
+def quit(request):
+    return None
+
+
+def person(request):
     return None

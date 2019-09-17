@@ -122,12 +122,15 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
+=======
   <component name="ProjectFrameBounds">
     <option name="x" value="129" />
     <option name="y" value="42" />
     <option name="width" value="1128" />
     <option name="height" value="858" />
   </component>
+>>>>>>> 5040ba2ae0d70667c8fb6305c8954404bb62fb66
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
