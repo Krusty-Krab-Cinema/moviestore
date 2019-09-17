@@ -76,3 +76,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment_content
+
+class Visited(models.Model):
+    m = models.ForeignKey('Movie', on_delete=models.DO_NOTHING)
+    u = models.ForeignKey('User', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'visited'
