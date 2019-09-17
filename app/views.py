@@ -32,34 +32,35 @@ def index(request):
     return render(request, 'index.html', {'carousel_list':carousel_list,
                                           'recommend_list':recommend_list,
                                           'username':usernameKey,
-                                        })
+
+#详情页                                 })
 def single(request):
     return None
-
+#评论
 def comment(request):
     return None
 
-
+# 各类视频展示及搜索页面
 def movie(request):
     return None
 
-
+#收藏
 def like(request):
     return None
 
-
+# 登陆页
 def login(request):
     return None
 
-
+# 注册页
 def register(request):
     return None
 
-
+# 退出页
 def quit(request):
     return None
 
-
+# 个人中心
 def person(request):
     return None
 
