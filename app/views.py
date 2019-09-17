@@ -33,6 +33,8 @@ def index(request):
                                           'recommend_list':recommend_list,
                                           'username':usernameKey,
                                         })
+def single(request):
+    return None
 
 def comment(request):
     return None
@@ -60,3 +62,5 @@ def quit(request):
 
 def person(request):
     return None
+
+
