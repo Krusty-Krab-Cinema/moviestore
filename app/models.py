@@ -35,10 +35,14 @@ class User(models.Model):
     subscribe = models.CharField('是否订阅电子杂志', max_length=4, default='on')  # 用户是否订阅杂志on/off
     token = models.CharField(max_length=250, default='')
 
+    is_vip = models.IntegerField('是否是vip用户',default=0) # 默认0表普通用户
+
+    v_start = models.DateField(default= '2019-01-01') #  vip用户的起始时间
+    v_end = models.DateField(default= '2019-01-01') #  vip用户的结束时间
     # 创建用户
     @classmethod
-    def createuser(cls, username, password, email, is_subscribe, token):
-        u = cls(username=username, password=password, email=email, subscribe=is_subscribe, token=token)
+    def createuser(cls, username, password, email, is_subscribe, token,is_vip):
+        u = cls(username=username, password=password, email=email, subscribe=is_subscribe, token=token, is_vip=is_vip)
         return u
 
     class Meta:
@@ -62,6 +66,7 @@ class Movie(models.Model):
     is_carousel = models.BooleanField('是否首页轮播展示', default=0)  # 是否首页轮播图展示，默认False
     is_sidebar = models.BooleanField('侧边栏推荐展示', default=0)  # 是否侧边栏推荐展示，默认False
     country = models.ForeignKey('Country', on_delete=models.DO_NOTHING, verbose_name='国家/地区')  # 外键关联
+    is_vipfilm = models.IntegerField('是否是vip电影', default=0)  # 仅限vip用户观看
 
     style_type = models.ManyToManyField(StyleType, verbose_name='风格类型')  # 多对多关联
     lead_role = models.ManyToManyField(LeadRole, verbose_name='主演')  # 多对多关联

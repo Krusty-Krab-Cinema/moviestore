@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^register/$', views.register),
     url(r'^quit/$', views.quit),
     url(r'^person/$', views.person)
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
