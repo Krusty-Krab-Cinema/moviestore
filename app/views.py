@@ -76,3 +76,54 @@ def quit(request):
 # 个人中心
 def person(request):
     return None
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render
+
+# Create your views here.
+from store.models import User
+
+
+# @login_required(login_url='/admin')
+def index(request):
+    return render(request,'index.html',locals())
+
+def logina(request):
+    # if request.POST:
+    #     passwd = request.POST.get('password', '')
+    #     usernm = request.POST.get('username', '')
+    #     user = authenticate(username=usernm, password=passwd)
+    #     if user:
+    #         if user.is_superuser:
+    #             if user.is_active:
+    #                 login(request, user)
+    #                 return render(request,'index.html')
+    #             return HttpResponse('<script>alert("账户已被锁定无法登录！");history.go(-2)</script>')
+    #         return HttpResponse('<script>alert("不是管理员！");history.go(-2)</script>')
+    #     return HttpResponse('<script>alert("账号或者密码错误");history.back()</script>')
+    return render(request, 'adminlogin.html', locals())
+
+# @login_required(login_url='/admin')
+def pinpai(request):
+
+    return render(request,'cs.html')
+
+
+def newsType(request):
+    return render(request,'newsType.html',locals())
+
+#用户管理界面
+def users(request):
+    # if request.POST=='del':
+
+    users = User.objects.filter()
+
+    return render(request, 'users.html', locals())
+
+
+def link(request):
+    return render(request,'link.html',locals())
