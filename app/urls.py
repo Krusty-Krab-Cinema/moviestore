@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 
 from . import views
 
-urlpatterns = [
+urlpatterns = (
     url(r'^$', views.index),
     url(r'^single/(\d+)/$', views.single),
     url(r'^comment/(\d+)/$', views.comment),
@@ -14,4 +14,4 @@ urlpatterns = [
     url(r'^register/$', views.register),
     url(r'^quit/$', views.quit),
     url(r'^person/$', views.person)
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    )
