@@ -15,3 +15,5 @@ urlpatterns = (
     url(r'^quit/$', views.quit),
     url(r'^person/$', views.person)
     )
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

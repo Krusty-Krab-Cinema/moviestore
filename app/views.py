@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from app.models import Movie
+from app.models import Movie, User
 
 
 def index(request):
@@ -19,12 +19,15 @@ def index(request):
         if i.new_link.count('.webp') > 1:
             i.new_link = i.new_link[ : len(i.new_link) - 5]
 
+
     # 推荐页面显示的视频小图（8个）
     recommend_list = Movie.objects.order_by('-mark')[:8]
     for r in recommend_list:
-        r.pic_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(r.cover_link).split('_')[0] + '.webp'
+        r.pic_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(r.cover_link).split('_')[
+            0] + '.webp'
         if r.pic_link.count('.webp') > 1:
             r.pic_link = r.pic_link[ : len(r.pic_link) - 5]
+
         r.like_count = len(r.like.all())  # 视频被收藏的总数
     return render(request, 'index.html', locals())
 
@@ -108,6 +111,15 @@ def comment(request, mid):
     Comment.objects.create(comment_content=comment_content, movie_id=m, user_id=currentuser)
 
     return redirect('/single/' + mid)
+
+
+    return render(request, 'index.html', {'carousel_list': carousel_list,
+                                          'recommend_list': recommend_list,
+                                          'username': usernameKey,
+                                          'user':user
+                                          })
+
+
 
 
 # 各类视频展示及搜索页面
@@ -225,6 +237,7 @@ def login(request):
         return response
 
 
+
 # 注册页
 def register(request):
     if request.method == 'GET':
@@ -273,6 +286,7 @@ def register(request):
             return response
 
 
+
 # 退出页
 from django.contrib.auth import logout
 def quit(request):
@@ -280,8 +294,58 @@ def quit(request):
     return redirect('/')
 
 
+
 # 个人中心
 def person(request):
     return None
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render
+
+# Create your views here.
+from store.models import User
 
 
+# @login_required(login_url='/admin')
+def index(request):
+    return render(request,'index.html',locals())
+
+def logina(request):
+    # if request.POST:
+    #     passwd = request.POST.get('password', '')
+    #     usernm = request.POST.get('username', '')
+    #     user = authenticate(username=usernm, password=passwd)
+    #     if user:
+    #         if user.is_superuser:
+    #             if user.is_active:
+    #                 login(request, user)
+    #                 return render(request,'index.html')
+    #             return HttpResponse('<script>alert("账户已被锁定无法登录！");history.go(-2)</script>')
+    #         return HttpResponse('<script>alert("不是管理员！");history.go(-2)</script>')
+    #     return HttpResponse('<script>alert("账号或者密码错误");history.back()</script>')
+    return render(request, 'adminlogin.html', locals())
+
+# @login_required(login_url='/admin')
+def pinpai(request):
+
+    return render(request,'cs.html')
+
+
+def newsType(request):
+    return render(request,'newsType.html',locals())
+
+#用户管理界面
+def users(request):
+    # if request.POST=='del':
+
+    users = User.objects.filter()
+
+    return render(request, 'users.html', locals())
+
+
+def link(request):
+    return render(request,'link.html',locals())
