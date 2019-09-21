@@ -1,5 +1,9 @@
+import datetime
+import time
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -9,7 +13,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
-from store.models import User, Movie, Comment
+from store.models import User, Movie, Comment, StyleType, Country
 
 
 # @login_required(login_url='/admin')
@@ -57,9 +61,11 @@ def user(request):
     mvs = Movie.objects.filter()
     return render(request, 'user.html', locals())
 
-#广告管理
+#各种操作管理
 def banner(request):
     mvs = Movie.objects.filter()
+    paginator = Paginator(mvs,5)
+    # pagination = paginator.page(int(page))
     return render(request, 'banner.html', locals())
 
 #评论管理
@@ -103,9 +109,12 @@ def delvip(request,id=0):
     return redirect(reverse('vip'))
     # return render(request, 'vip.html', locals())
 #添加管理员账户
-def addmanager(request):
+def addmanager(request,id=1):
+    a = User.objects.get(id=id)
+    a.is_superuser = not a.is_superuser
+    a.save()
+    return redirect(reverse('vip'))
 
-    return render(request, 'useradd.html', locals())
 #删除管理员
 def delmanager(request,id=0):
     print('11111')
@@ -164,13 +173,35 @@ def jiadel(request,id=1):
 #操作里面的真删除
 def realdel(request,id=1):
     a = Movie.objects.get(id=id)
-    a.is_delete = 1
-    a.save()
+    a.delete()
     mvs = Movie.objects.filter()
     return redirect(reverse('banner'))
 
 #类别管理
 def types(request):
+    types = StyleType.objects.filter()
+    cts = Country.objects.filter()
+    if request.method == 'POST':
+        print(request.POST.get('sub'))
+        if request.POST.get('sub') == 'mv':
+            if request.POST.get('addtype'):
+                newtype = StyleType()
+                newtype.style_type = request.POST.get('addtype')
+                print(newtype.style_type)
+                newtype.save()
+                return redirect(reverse('types'))
+            else:
+                error_msg = '请添加类型'
+                return render(request, 'types.html', locals())
+        else:
+            if request.POST.get('ct'):
+                newtype = Country()
+                newtype.country = request.POST.get('ct')
+                newtype.save()
+                return redirect(reverse('types'))
+            else:
+                error_msg2 = '请添加地区'
+                return render(request, 'types.html', locals())
 
     return render(request, 'types.html', locals())
 
@@ -181,7 +212,18 @@ def flink(request):
 
 #用户充钱管理
 def domoney(request):
+    nowday= time.strftime('%Y-%m-%d',time.localtime())
+    print(nowday,type(nowday))
+    # 今儿帖子
+    user=User.objects.filter()
+    a = []
+    for u in user:
+        if str(u.v_start) == nowday:
+            a.append(u)
 
+    #     print('hhh')
+    # # user = User.objects.filter(v_start__gt=zeroToday, v_start__lt=lastToday)
+    # print(user)
     return render(request, 'domoney.html', locals())
 
 #上传电影
@@ -193,3 +235,16 @@ def addmv(request):
 def main(request):
 
     return render(request, 'main.html', locals())
+
+#删除电影类型
+def deltype(request,id=1):
+    a = StyleType.objects.get(id=id)
+    a.delete()
+
+    return redirect(reverse('types'))
+
+#删除国家类型
+def delct(request,id=1):
+    a = Country.objects.get(id=id)
+    a.delete()
+    return redirect(reverse('types'))

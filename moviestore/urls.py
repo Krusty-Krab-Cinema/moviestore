@@ -60,7 +60,7 @@ urlpatterns = [
     #操作里面的真删除
     url(r'^realdel/(\d+)', views.realdel, name='realdel'),
     #添加管理员账户
-    url(r'^addmanager/', views.addmanager, name='addmanager'),
+    url(r'^addmanager/(\d+)', views.addmanager, name='addmanager'),
     #类别管理
     url(r'^types/', views.types, name='types'),
     #友情链接额
@@ -69,4 +69,8 @@ urlpatterns = [
     url(r'^domoney/', views.domoney, name='domoney'),
     #上传电影
     url(r'^addmv/', views.addmv, name='addmv'),
+    #删除电影类型
+    url(r'^deltype/(\d+)', views.deltype, name='deltype'),
+    #删除国家列表
+    url(r'^delct/(\d+)', views.delct, name='delct'),
 ]
