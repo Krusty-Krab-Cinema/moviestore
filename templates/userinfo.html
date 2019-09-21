@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% load static from staticfiles %}
+{% block a %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+{% endblock %}
+
+
+{% block mine %}
+    <!--<li style="list-style-type: none"><img src="{% static 'images/p1.png' %}" alt=""/></li>-->
+    {% if username %}
+        {% ifequal user.is_vip 1 %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><img style="width: 30px;height: 30px" src="/static/images/vip1.jpg"
+                                                   alt="vip"></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+        {% else %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+            <li style="list-style-type: none"><a style="color: green;font-size: 10px" href="{% url 'vip' %}">
+                <marquee behavior="scroll" direction="left">同学,充个VIP吧,很爽的呦！</marquee>
+            </a></li>
+        {% endifequal %}
+    {% else %}
+        <li style="list-style-type: none"><p><a href="/login/">立即登陆</a></p></li>
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h2 class="m_3">个人中心</h2>
+        <p> &nbsp;</p>
+        <style>
+            .mylead:link, .mylead:visited {
+                display: block;
+                width: 400px;
+                font-size: 20px;
+                font-weight: bold;
+                color: #FFFFFF;
+                background-color: #888888;
+                text-align: center;
+                padding: 4px;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+            .mylead:hover, .mylead:active {
+                background-color: #5bc0de;
+            }
+        </style>
+
+
+        <div style="margin-left: 150px">
+            <ul style="list-style-type:none;margin:0;padding:0;overflow:hidden;">
+                <li style="float:left;width: 40%"><a class="mylead" href="{% url 'person' %}">我的收藏</a></li>
+                <li style="float:left;width: 40%"><a class="mylead" href="{% url 'user' %}">我的信息</a></li>
+            </ul>
+        </div>
+
+
+        <p> &nbsp;</p>
+    <div style="background: #a6e1ec; border-radius: 80px;height: 600px;">
+        <section class="hero bg-indigo">
+            {#            <div style="margin-left: 400px">#}
+            <center style="opacity: 1;filter: alpha(opacity=40)">
+                <img src="/static/images/xbwlogo.jpg" style="border-radius: 500px;height: 300px;width: 300px"
+                     class="brand-logo img-fluid rounded-circle"/>
+
+            {#            </div>#}
+{#            <div style="margin-left: 50px">#}
+                {% ifequal user.is_vip 1 %}
+
+                    <h1 class="pt-4 text-white h2">尊贵的VIP用户：<span>{{ username }}</span>,<span>您好</span>
+                        <br/>您的个人信息如下：</h1><br>
+
+{#            </div>#}
+                    <div style="margin-left: 300px">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">&nbsp;用户名&nbsp;</span>
+                            <span type="text" class="form-control" aria-describedby="sizing-addon1"
+                                  style="width: 350px;" value="">{{ username }}</span>
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon"
+                                  id="sizing-addon1">&nbsp;&nbsp;邮&nbsp;&nbsp;箱&nbsp;&nbsp;</span>
+                            <span class="form-control" aria-describedby="sizing-addon1"
+                                  style="width: 350px;">{{ user.email }}</span>
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">VIP时间</span>
+                            <span type="text" class="form-control" aria-describedby="sizing-addon1"
+                                  style="width: 350px;" value="">{{ user.v_start }}--{{ user.v_end }}</span>
+                        </div>
+
+                    </div>
+                {% else %}
+                    <h1 class="pt-4 text-white h2">亲爱的用户：<span>{{ username }}</span>,<span>您好</span>
+                        <br/>您的个人信息如下：</h1>
+                    <div style="margin-left: 300px">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">&nbsp;用户名&nbsp;</span>
+                            <input type="text" class="form-control" aria-describedby="sizing-addon1"
+                                   style="width: 350px;" value="{{ username }}">
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon"
+                                  id="sizing-addon1">&nbsp;&nbsp;邮&nbsp;&nbsp;箱&nbsp;&nbsp;</span>
+                            <input type="text" class="form-control" aria-describedby="sizing-addon1"
+                                   style="width: 350px;" value="{{ user.email }}">
+                        </div>
+                        <div class="input-group input-group-lg">
+{#                            <span class="input-group-addon" id="sizing-addon1">VIP时间</span>#}
+                        您还未开启<span><a style="font-size: 15px;color: orangered;text-decoration: none" href="{% url 'vip' %}">VIP</a>特权</span>
+{#                            <span class="input-group-addon" id="sizing-addon1">VIP时间</span>#}
+{#                            <input type="text" class="form-control" aria-describedby="sizing-addon1"#}
+{#                                   style="width: 350px;" value="">#}
+                        </div>
+
+                    </div>
+                    </center>
+{#                    <p class="mt-4 lead text-white"><br>#}
+{#                        用户名： <span>{{ username }}</span> <br>#}
+{#                        邮箱：　<span>{{ user.email }}</span> <br>#}
+{#                        您还未开启<span><a style="font-size: 15px;color: orangered;text-decoration: none"#}
+{#                                      href="{% url 'vip' %}">VIP</a></span>特权#}
+{#                    </p>#}
+                {% endifequal %}
+            <!--<div class="pt-3">
+                <a href="#" class="btn btn-white-alt text-blue btn-lg">
+                    Hire me!
+                </a>
+            </div>-->
+{#        </div>#}
+
+        </section>
+    </div>
+    </div>
+{% endblock %}

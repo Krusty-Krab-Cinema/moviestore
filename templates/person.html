@@ -4,8 +4,18 @@
 {% block mine %}
     <!--<li style="list-style-type: none"><img src="{% static 'images/p1.png' %}" alt=""/></li>-->
     {% if username %}
-        <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
-        <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+        {% ifequal user.is_vip 1 %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><img style="width: 30px;height: 30px" src="/static/images/vip1.jpg"
+                                                   alt="vip"></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+        {% else %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+            <li style="list-style-type: none"><a style="color: green;font-size: 10px" href="{% url 'vip' %}">
+                <marquee behavior="scroll" direction="left">同学,充个VIP吧,很爽的呦！</marquee>
+            </a></li>
+        {% endifequal %}
     {% else %}
         <li style="list-style-type: none"><p><a href="/login/">立即登陆</a></p></li>
     {% endif %}
@@ -15,6 +25,33 @@
 {% block content %}
     <div class="content">
         <h2 class="m_3">个人中心</h2>
+        <p>&nbsp;</p>
+        <style>
+            .mylead:link, .mylead:visited {
+                display: block;
+                width: 400px;
+                font-size: 20px;
+                font-weight: bold;
+                color: #FFFFFF;
+                background-color: #888888;
+                text-align: center;
+                padding: 4px;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+            .mylead:hover, .mylead:active {
+                background-color: #5bc0de;
+            }
+        </style>
+
+        <div style="margin-left: 150px">
+                <ul style="list-style-type:none;margin:0;padding:0;overflow:hidden;">
+                    <li style="float:left;width: 40%"><a class="mylead" href="{% url 'person' %}">我的收藏</a></li>
+                    <li style="float:left;width: 40%"><a class="mylead" href="{% url 'user' %}">我的信息</a></li>
+                </ul>
+        </div>
+        <p>&nbsp;</p>
+
         <div class="movie_top">
             <nav class="col-md-9 movie_box">
                 <!-- Movie variant with time -->
@@ -89,6 +126,7 @@
                     </ul>
                 </div>
                 <!-- Movie variant with time -->
+            </nav>
         </div>
         <div class="col-md-3">
             {% for side in side_recommend %}
@@ -110,7 +148,7 @@
         </div>
         <div class="clearfix"></div>
         <!--</div>-->
-        <h1 class="recent">测试广告</h1>
+        <h3 class="recent">会员信息</h3>
         <ul id="flexiselDemo3">
             {% for ad in ad_list %}
                 <li><img src="/uploads/{{ ad.pic }}" class="img-responsive"/>

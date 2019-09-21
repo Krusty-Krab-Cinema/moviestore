@@ -1,9 +1,21 @@
-from django.shortcuts import render
+import datetime
+import json
+import time
+
+from dateutil.relativedelta import relativedelta
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
+from django.contrib.auth.hashers import make_password, check_password
+from django.db import models
+from django.urls import reverse
+
+from gradesign.settings import APP_PRIVATE_KEY, ALIPAY_PUBLIC_KEY
+from .models import Movie, User, Comment, Advertise
 
 # Create your views here.
-from app.models import Movie, User
-
-
+# 首页
 def index(request):
     # return HttpResponse('hi')
     # return render(request, 'base.html')
@@ -19,15 +31,12 @@ def index(request):
         if i.new_link.count('.webp') > 1:
             i.new_link = i.new_link[ : len(i.new_link) - 5]
 
-
     # 推荐页面显示的视频小图（8个）
     recommend_list = Movie.objects.order_by('-mark')[:8]
     for r in recommend_list:
-        r.pic_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(r.cover_link).split('_')[
-            0] + '.webp'
+        r.pic_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(r.cover_link).split('_')[0] + '.webp'
         if r.pic_link.count('.webp') > 1:
             r.pic_link = r.pic_link[ : len(r.pic_link) - 5]
-
         r.like_count = len(r.like.all())  # 视频被收藏的总数
     return render(request, 'index.html', locals())
 
@@ -113,15 +122,6 @@ def comment(request, mid):
     return redirect('/single/' + mid)
 
 
-    return render(request, 'index.html', {'carousel_list': carousel_list,
-                                          'recommend_list': recommend_list,
-                                          'username': usernameKey,
-                                          'user':user
-                                          })
-
-
-
-
 # 各类视频展示及搜索页面
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def movie(request, tid):
@@ -150,6 +150,7 @@ def movie(request, tid):
     elif tid == '0':
         key_word = request.POST.get('keyword')
         search_list = Movie.objects.filter(name__contains=key_word)
+        print(search_list.count())
 
 
     # 重新拼接处理封面图片的url以及出演人员的处理（默认显示3个主角）
@@ -165,7 +166,6 @@ def movie(request, tid):
         # print(s.s_lead)
 
         s.like_count = len(s.like.all())  # 视频被收藏的总数
-
 
     paginator = Paginator(search_list, 6) # 一页显示 6 条
     page = request.GET.get('page')
@@ -237,7 +237,6 @@ def login(request):
         return response
 
 
-
 # 注册页
 def register(request):
     if request.method == 'GET':
@@ -286,7 +285,6 @@ def register(request):
             return response
 
 
-
 # 退出页
 from django.contrib.auth import logout
 def quit(request):
@@ -294,58 +292,180 @@ def quit(request):
     return redirect('/')
 
 
-
 # 个人中心
 def person(request):
-    return None
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import render
+    key = request.COOKIES.get('usernameKey')
+    usernameKey = request.session.get(key, 0)
+    key = request.COOKIES.get('usernameKey')
+    username = request.session.get(key, 0)
+    if username != 0:
+        user = User.objects.get(username=username)
+    try:
+        username = request.GET.get('name')
+        print(username,'person')
+        currentuser = User.objects.get(username=username).id
 
-# Create your views here.
-from django.shortcuts import render
+    except:
+        token = request.COOKIES.get('userToken')
+        currentuser = User.objects.get(token=token).id
 
-# Create your views here.
-from store.models import User
+    results = Movie.objects.filter(like=currentuser)
+    # 重新拼接处理封面图片的url以及出演人员的处理（默认显示3个主角）
+    for s in results:
+        # 封面图片的链接
+        s.slink = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
+            0] + '.webp'
+        if s.slink.count('.webp') > 1:
+            s.slink = s.slink[: len(s.slink) - 5]
+        # print(s.slink)
+        # 主角
+        s.s_lead = s.lead_role.all()[:3]
+        # print(s.s_lead)
+        s.like_count = len(s.like.all())  # 视频被收藏的总数
+
+    paginator = Paginator(results, 6)  # 一页显示 6 条
+    page = request.GET.get('page')
+
+    # 获取对应页面
+    try:
+        results = paginator.page(page)
+
+        # 页面不是整数，返回第一页
+    except PageNotAnInteger:
+        results = paginator.page(1)
+
+        # 页码越界，返回最后一页
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+
+    # 侧边栏推荐
+    side_recommend = Movie.objects.order_by('-mark')[: 3]
+    for s in side_recommend:
+        s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
+            0] + '.webp'
+        if s.new_link.count('.webp') > 1:
+            s.new_link = s.new_link[: len(s.new_link) - 5]
+
+        s.like_count = len(s.like.all())
+
+    # 底部广告栏
+    ad_list = Advertise.objects.all()
+    import os
+    for a in ad_list:
+        print(a.pic)
+
+    return render(request, 'person.html', {
+        'user':user,
+        'username':usernameKey,
+        'side_recommend': side_recommend,
+        'ad_list': ad_list,
+        'results':results,
+    })
+
+# 我的信息
+def user(request):
+    key = request.COOKIES.get('usernameKey')
+    usernameKey = request.session.get(key, 0)
+    key = request.COOKIES.get('usernameKey')
+    username = request.session.get(key, 0)
+    if username != 0:
+        user=User.objects.get(username=username)
+
+    try:
+        username = request.GET.get('name')
+        print(username, 'person')
+        currentuser = User.objects.get(username=username).id
+    except:
+        token = request.COOKIES.get('userToken')
+        currentuser = User.objects.get(token=token).id
+
+    return render(request,'userinfo.html',{
+        'username':usernameKey,
+        'user':user
+    })
+
+def play(request,mid):
+    userkey=request.GET.get('user')
+    user=User.objects.get(username=userkey)
+    playmovie=Movie.objects.get(id=mid)
+    print(playmovie.imdb_link, type(playmovie.imdb_link))
+    if playmovie.is_vipfilm == 1:
+        if user.is_vip == 1:
+            return render(request,'newmovie.html',{'ffid': json.dumps(playmovie.imdb_link)})
+        else:
+            return render(request,'turn.html')
+    else:
+        return render(request, 'newmovie.html', {'ffid': json.dumps(playmovie.imdb_link)})
 
 
-# @login_required(login_url='/admin')
-def index(request):
-    return render(request,'index.html',locals())
+def vip(request):
+    key = request.COOKIES.get('usernameKey')
+    usernameKey = request.session.get(key, 0)
+    username = request.session.get(key, 0)
+    if username != 0:
+        user = User.objects.get(username=username)
+        print(user)
+    if request.method == 'POST':
+            times=request.POST.get('viptype')
+            if times:
+                print(times)
+                user.v_start = datetime.datetime.now()
+                user.v_end = user.v_start+relativedelta(months=int(times))
+                user.is_vip = 1
+                user.save()
+                return redirect('/payit/?times={}&&name={}'.format(times,username))
+            else:
+                error_msg = '请选择会员类型'
+                return render(request,'vip.html',{'error_msg':error_msg})
 
-def logina(request):
-    # if request.POST:
-    #     passwd = request.POST.get('password', '')
-    #     usernm = request.POST.get('username', '')
-    #     user = authenticate(username=usernm, password=passwd)
-    #     if user:
-    #         if user.is_superuser:
-    #             if user.is_active:
-    #                 login(request, user)
-    #                 return render(request,'index.html')
-    #             return HttpResponse('<script>alert("账户已被锁定无法登录！");history.go(-2)</script>')
-    #         return HttpResponse('<script>alert("不是管理员！");history.go(-2)</script>')
-    #     return HttpResponse('<script>alert("账号或者密码错误");history.back()</script>')
-    return render(request, 'adminlogin.html', locals())
-
-# @login_required(login_url='/admin')
-def pinpai(request):
-
-    return render(request,'cs.html')
-
-
-def newsType(request):
-    return render(request,'newsType.html',locals())
-
-#用户管理界面
-def users(request):
-    # if request.POST=='del':
-
-    users = User.objects.filter()
-
-    return render(request, 'users.html', locals())
+    return render(request,'vip.html',{
+            'user': user,
+            'username':usernameKey
+        })
 
 
-def link(request):
-    return render(request,'link.html',locals())
+def jump(request):
+    username = request.GET.get('name')
+    print(username,'jump')
+    return render(request,'turn.html',locals())
+
+def payit(request):
+    times= request.GET.get('times')
+    username = request.GET.get('name')
+    print(times,type(times))
+    print(username)
+    if times == '1':
+        money = 10
+    elif times == '2':
+        money = 28
+    elif times == '3':
+        money = 58
+    else:
+        money = 108
+    from alipay import AliPay
+    alipay = AliPay(
+        appid='2016101400683992',
+        app_notify_url=None,
+        app_private_key_string=APP_PRIVATE_KEY,
+        alipay_public_key_string=ALIPAY_PUBLIC_KEY,
+        sign_type="RSA2",
+        debug=False
+    )
+    no = str(int(time.time()))
+    order_string = alipay.api_alipay_trade_page_pay(
+        out_trade_no=no,
+        total_amount=money,
+        subject="会员充值",
+        return_url="http://localhost:8000/person/?name={}".format(username),
+        # notify_url="http://localhost:8000/",
+
+    )
+    net = "https://openapi.alipaydev.com/gateway.do?{}".format(order_string)
+    # data = {
+    #     "msg": "ok",
+    #     "status": 200,
+    #     "data": {"pay_url": net + order_string
+    #              }}
+
+    # logout(request)
+    return redirect(net)

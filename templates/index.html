@@ -58,14 +58,21 @@
                     <div class="col-md-2 grid_6">
                         <div class="m_7"><a href="/single/{{ recommend.id }}/"><img style="width: 181px; height: 166px" src="{{ recommend.pic_link }}" class="img-responsive"
                                                                     alt=""/></a></div>
-                        <div class="caption1">
-                            <ul class="list_5">
-                                <li><i class="icon5"> </i>
-                                    <p>{{ recommend.like_count }}</p></li>
-                            </ul>
+{#                        <div class="caption1">#}
+{#                            <ul class="list_5">#}
+{#                                <li><i class="icon5"> </i>#}
+{#                                    <p><b>{{ recommend.like_count }}</b></p></li>#}
+{#                            </ul>#}
                             <!--<i class="icon4 icon6"> </i>-->
-                            <a href="/single/{{ recommend.id }}/"><p class="m_3">{{ recommend.name }}</p></a>
-                        </div>
+{#                            <a href="/single/{{ recommend.id }}/"><p class="m_3">{{ recommend.name }}</p></a>#}
+{#                        </div>#}
+
+                        <i class="icon5"></i><b>{{ recommend.like_count }}</b>
+                        <p style="text-align: center"><a href="/single/{{ recommend.id }}/" style="text-decoration: none;color: ;: ;">{{ recommend.name }}</a>&nbsp;
+                            {% ifequal recommend.is_vipfilm 1 %}
+                            <img style="width:15px;height: 15px" src="/static/images/lvip.jpg" alt="">
+                            {% endifequal %}
+                        </p>
                     </div>
                 {% endfor %}
                 <div class="clearfix"></div>

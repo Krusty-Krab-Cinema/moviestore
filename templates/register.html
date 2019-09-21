@@ -11,55 +11,49 @@
 
 {% block content %}
     <div class="content">
-        <div class="register">
-            <form method="post" action="/register/">
-                {% csrf_token %}
-                <div class="register-top-grid">
-                    <h3>个人信息</h3>
-                    <div>
-                        <span>昵称<label>*</label></span>
-                        <input type="text" name="nickname" id="nickname">
-                        <div class="alert alert-info" role="alert" id="nickerror1" style="width: 499px">昵称格式输入错误</div>
-                        <div class="alert alert-info" role="alert" id="nickerror2" style="width: 499px">昵称已被占用，请重新输入
+            <div class="register">
+                <form method="post" action="/register/">
+                    {% csrf_token %}
+                    <div class="register-top-grid">
+                        <h3>个人信息</h3>
+                        <div>
+                            <span>昵称<label>*</label></span>
+                            <input type="text" name="nickname" id="nickname">
+                            <div class="alert alert-info" role="alert" id="nickerror1" style="width: 499px">昵称格式输入错误</div>
+                            <div class="alert alert-info" role="alert" id="nickerror2" style="width: 499px">昵称已被占用，请重新输入</div>
                         </div>
+                        <div>
+                            <span>邮箱<label>*</label></span>
+                            <input type="text" name="email" id="email">
+                            <div class="alert alert-info" role="alert" id="emailerror1" style="width: 499px">邮箱格式输入错误</div>
+                            <div class="alert alert-info" role="alert" id="emailerror2" style="width: 499px">邮箱已被占用，请重新输入</div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <a class="news-letter" href="#">
+                            <label class="checkbox"><input type="checkbox" name="subscribe" checked=""><i> </i>订阅电子杂志</label>
+                        </a>
                     </div>
-                    <div>
-                        <span>邮箱<label>*</label></span>
-                        <input type="text" name="email" id="email">
-                        <div class="alert alert-info" role="alert" id="emailerror1" style="width: 499px">邮箱格式输入错误</div>
-                        <div class="alert alert-info" role="alert" id="emailerror2" style="width: 499px">邮箱已被占用，请重新输入
+                    <div class="register-bottom-grid">
+                        <h3>登陆信息</h3>
+                        <div>
+                            <span>密码<label>*</label></span>
+                            <input type="password" name="password" id="password" placeholder="密码长度为6~16个字符">
+                            <div class="alert alert-info" role="alert" id="passworderror1" style="width: 499px">密码格式输入错误</div>
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <a class="news-letter" href="#">
-                        <label class="checkbox"><input type="checkbox" name="subscribe"
-                                                       checked=""><i> </i>订阅电子杂志</label>
-                    </a>
-                </div>
-                <div class="register-bottom-grid">
-                    <h3>登陆信息</h3>
-                    <div>
-                        <span>密码<label>*</label></span>
-                        <input type="password" name="password" id="password" placeholder="密码长度为6~16个字符">
-                        <div class="alert alert-info" role="alert" id="passworderror1" style="width: 499px">密码格式输入错误
+                        <div>
+                            <span>确认密码<label>*</label></span>
+                            <input type="password" name="repassword" id="repassword" placeholder="密码长度为6~16个字符">
+                            <div class="alert alert-info" role="alert" id="passworderror2" style="width: 499px">两次密码输入不同</div>
                         </div>
-                    </div>
-                    <div>
-                        <span>确认密码<label>*</label></span>
-                        <input type="password" name="repassword" id="repassword" placeholder="密码长度为6~16个字符">
-                        <div class="alert alert-info" role="alert" id="passworderror2" style="width: 499px">两次密码输入不同
-                        </div>
+                        <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="register-but">
-                    <input type="submit" value="立即注册" class="sbt"
-                           style="background: #df1f26;color: #FFF;font-size: 1em;padding: 7px 20px;border: none;">
-                    <div class="clearfix"></div>
-                </div>
-            </form>
+                    <div class="register-but">
+                            <input type="submit" value="立即注册" class="sbt" style="background: #df1f26;color: #FFF;font-size: 1em;padding: 7px 20px;border: none;">
+                            <div class="clearfix"></div>
+                    </div>
+                </form>
 
+            </div>
         </div>
-    </div>
 {% endblock %}
