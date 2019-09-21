@@ -11,7 +11,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.db import models
 from django.urls import reverse
 
-from gradesign.settings import APP_PRIVATE_KEY, ALIPAY_PUBLIC_KEY
+from moviestore.settings import APP_PRIVATE_KEY, ALIPAY_PUBLIC_KEY
 from .models import Movie, User, Comment, Advertise
 
 # Create your views here.
@@ -27,15 +27,19 @@ def index(request):
     # 导航显示的视频封面图片
     carousel_list = Movie.objects.filter(is_carousel=True)
     for i in carousel_list:
-        i.new_link = 'https://img3.doubanio.com/view/photo/l/public/' + str(i.cover_link).split('_')[0] + '.webp'
-        if i.new_link.count('.webp') > 1:
+        # i.new_link = 'https://img3.doubanio.com/view/photo/l/public/' + str(i.cover_link).split('_')[0] + '.webp'
+        # if i.new_link.count('.webp') > 1:
+        i.new_link = '/static/pics/'+str(i.cover_link).split('_')[0]+'.jpg'
+        if i.new_link.count('.jpg') > 1:
             i.new_link = i.new_link[ : len(i.new_link) - 5]
 
     # 推荐页面显示的视频小图（8个）
     recommend_list = Movie.objects.order_by('-mark')[:8]
     for r in recommend_list:
-        r.pic_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(r.cover_link).split('_')[0] + '.webp'
-        if r.pic_link.count('.webp') > 1:
+        # r.pic_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(r.cover_link).split('_')[0] + '.webp'
+        # if r.pic_link.count('.webp') > 1:
+        r.pic_link = '/static/pics/' + str(r.cover_link).split('_')[0]+'.jpg'
+        if r.pic_link.count('.jpg') > 1:
             r.pic_link = r.pic_link[ : len(r.pic_link) - 5]
         r.like_count = len(r.like.all())  # 视频被收藏的总数
     return render(request, 'index.html', locals())
@@ -84,16 +88,22 @@ def single(request, mid):
     else:
         is_like = 3
 
-    single_movie.single_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + \
-                               str(single_movie.cover_link).split('_')[0] + '.webp'
-    if single_movie.single_link.count('.webp') > 1:
+    # single_movie.single_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + \
+    #                            str(single_movie.cover_link).split('_')[0] + '.webp'
+    single_movie.single_link = '/static/pics/' + \
+                               str(single_movie.cover_link).split('_')[0] + '.jpg'
+    if single_movie.single_link.count('.jpg') > 1:
         single_movie.single_link = single_movie.single_link[: len(single_movie.single_link) - 5]
 
     # 侧边栏推荐
     side_recommend = Movie.objects.order_by('-mark')[ : 3]
     for s in side_recommend:
-        s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[0] + '.webp'
-        if s.new_link.count('.webp') > 1:
+        # s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[0] + '.webp'
+        # if s.new_link.count('.webp') > 1:
+        # if s.new_link.count('.webp') > 1:
+
+        s.new_link = '/static/pics/' + str(s.cover_link).split('_')[0] + '.jpg'
+        if s.new_link.count('.jpg') > 1:
             s.new_link = s.new_link[ : len(s.new_link) - 5]
 
         s.like_count = len(s.like.all())
@@ -156,8 +166,10 @@ def movie(request, tid):
     # 重新拼接处理封面图片的url以及出演人员的处理（默认显示3个主角）
     for s in search_list:
         # 封面图片的链接
-        s.slink = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[0] + '.webp'
-        if s.slink.count('.webp') > 1:
+        # s.slink = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[0] + '.webp'
+        # if s.slink.count('.webp') > 1:
+        s.slink = '/static/pics/' + str(s.cover_link).split('_')[0] + '.jpg'
+        if s.slink.count('.jpg') > 1:
             s.slink = s.slink[ : len(s.slink) - 5]
         # print(s.slink)
 
@@ -185,9 +197,12 @@ def movie(request, tid):
     # 侧边栏推荐
     side_recommend = Movie.objects.order_by('-mark')[: 3]
     for s in side_recommend:
-        s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
-            0] + '.webp'
-        if s.new_link.count('.webp') > 1:
+        # s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
+        #     0] + '.webp'
+        # if s.new_link.count('.webp') > 1:
+        s.new_link = '/statics/pics/' + str(s.cover_link).split('_')[
+            0] + '.jpg'
+        if s.new_link.count('.jpg') > 1:
             s.new_link = s.new_link[: len(s.new_link) - 5]
 
         s.like_count = len(s.like.all())
@@ -233,6 +248,8 @@ def login(request):
 
         request.session['username'] = u.username
         response.set_cookie('usernameKey', 'username')
+        if u.v_end < datetime.date.today():
+            u.update(is_vip=0)
 
         return response
 
@@ -313,9 +330,10 @@ def person(request):
     # 重新拼接处理封面图片的url以及出演人员的处理（默认显示3个主角）
     for s in results:
         # 封面图片的链接
-        s.slink = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
-            0] + '.webp'
-        if s.slink.count('.webp') > 1:
+        # s.slink = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
+        #     0] + '.webp'
+        s.slink = '/static/pics/' + str(s.cover_link).split('_')[0] + '.jpg'
+        if s.slink.count('.jpg') > 1:
             s.slink = s.slink[: len(s.slink) - 5]
         # print(s.slink)
         # 主角
@@ -341,9 +359,11 @@ def person(request):
     # 侧边栏推荐
     side_recommend = Movie.objects.order_by('-mark')[: 3]
     for s in side_recommend:
-        s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
-            0] + '.webp'
-        if s.new_link.count('.webp') > 1:
+        # s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
+        #     0] + '.webp'
+        s.new_link = '/static/pics/' + str(s.cover_link).split('_')[
+            0] + '.jpg'
+        if s.new_link.count('.jpg') > 1:
             s.new_link = s.new_link[: len(s.new_link) - 5]
 
         s.like_count = len(s.like.all())
