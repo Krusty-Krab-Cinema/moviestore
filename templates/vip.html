@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block mine %}
+    <!--<li style="list-style-type: none"><img src="{% static 'images/p1.png' %}" alt=""/></li>-->
+    {% if username %}
+        {% ifequal user.is_vip 1 %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><img style="width: 30px;height: 30px" src="/static/images/vip1.jpg" alt="vip"></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+        {% else %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+            <li style="list-style-type: none"><a style="color: green;font-size: 10px" href="{% url 'vip' %}">
+                <marquee behavior="scroll" direction="left">同学,充个VIP吧,很爽的呦！</marquee></a></li>
+        {% endifequal %}
+    {% else %}
+        <li style="list-style-type: none"><p><a href="/login/">立即登陆</a></p></li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<style>
+
+#vip {
+    text-align: center;
+    margin: auto;
+    list-style: none;
+    font-size: 20px;
+    color: white;
+}
+#hh {
+    text-align: center;
+    margin-top: 30px;
+}
+#money{
+    color: grey;
+}
+#oldmoney{
+    text-decoration: line-through;
+}
+
+</style>
+
+<body>
+<div id="hh">
+<h2 style="color:white;">亲爱的{{ username }},
+    你想拥有力量吗？
+</h2>
+</div>
+<div id="vip">
+
+    <form action="{% url 'vip' %}" method="post">
+        <table id="vip">
+    {{ crsf_token }}
+        <tr><td><input type="radio" name="viptype" value="1" id="1">&nbsp;<label for="1"> 小海绵会员(1个月)</label><img src="/static/images/hmbb.gif" alt=""></td>
+            <td id="money">¥10元 / 连续包月</td>
+        </tr>
+        <tr><td><input type="radio" name="viptype" value="3" id="2">&nbsp;<label for="2"> 派大星会员(3个月)</label><img src="/static/images/pdx.gif" alt=""></td>
+            <td id="money">¥28元 / 连续包季 <span id="oldmoney">¥30</span></td>
+        </tr>
+        <tr><td><input type="radio" name="viptype" value="6" id="3">&nbsp;<label for="3"> 珊迪会员(6个月)</label><img src="/static/images/Susan.gif" alt=""></td>
+            <td id="money">¥58元 / 半年 <span id="oldmoney">¥60</span></td>
+        </tr>
+        <tr><td><input type="radio" name="viptype" value="12" id="4">&nbsp;<label for="4"> 章鱼哥会员(12个月)</label><img src="/static/images/zyg.gif" alt=""></td>
+            <td id="money">¥108元 / 一年 <span id="oldmoney">¥120</span></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        {% if error_msg %}
+            <tr><td colspan="2"><span style="color: red;font-size: 10px">{{ error_msg }}</span></td></tr>
+        {% endif %}
+        <tr><td colspan="2"><button class="btn1" type="submit">确认购买</button></td></tr>
+        </table>
+    </form>
+
+</div>
+
+</body>
+{% endblock %}
+

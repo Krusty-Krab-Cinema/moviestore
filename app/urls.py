@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^login/$', views.login),
     url(r'^register/$', views.register),
     url(r'^quit/$', views.quit),
+    url(r'^vip/',views.vip,name='vip'),
     url(r'^person/$', views.person)
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
