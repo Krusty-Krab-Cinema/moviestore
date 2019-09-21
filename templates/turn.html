@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>跳转</title>
+		<style type="text/css">
+			*{
+				margin: 0px;
+				padding: 0px;
+			}
+			#main{
+				margin: 100px;
+				background: #abcdef;
+	            width: 520px;
+	            padding: 40px;
+	            border-radius: 20px 20px 20px 20px;
+	            box-shadow: 0 2px 12px #666666;
+			}
+			#box{
+				font-size: 30px;
+				font-weight: bolder;
+			}
+		</style>
+	</head>
+	<body>
+		<center>
+			<div id="main">
+				<img style="height: 85px;width: 85px;" src="/static/images/xlb.jpg" alt="" />
+				<div id="box">
+					vip影片仅会员可观看
+                    还有<span id="sp">3</span>秒跳转到充值中心...
+				</div>
+			</div>
+
+            <script>
+                onload=function () {
+                    setInterval(go,1000)
+                };
+                var x=2;
+                function go() {
+
+                    if (x>=0){
+                        document.getElementById("sp").innerText=x;
+                    }else {
+                        location="{% url 'vip' %}";
+                    }
+                    x--;
+                }
+            </script>
+		</center>
+	</body>
+</html>

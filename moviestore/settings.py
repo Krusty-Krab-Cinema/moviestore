@@ -25,7 +25,7 @@ SECRET_KEY = '!e7apg0n6xpu!ij@_v7sx_a!*(%_e3drsgf9+l4jjb@d*)$#jr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'moviestore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'maoyan',
+        'NAME':'movie',
         'HOST':'152.136.104.104',
         'USER':'root',
         'PASSWORD':'dyvan1013',

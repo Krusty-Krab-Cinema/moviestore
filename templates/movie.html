@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
-{% load static from staticfiles %}
+{% load static from staticfiles%}
 
 {% block mine %}
     <!--<li style="list-style-type: none"><img src="{% static 'images/p1.png' %}" alt=""/></li>-->
     {% if username %}
-        <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
-        <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+        {% ifequal user.is_vip 1 %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><img style="width: 30px;height: 30px" src="/static/images/vip1.jpg" alt="vip"></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+        {% else %}
+            <li style="list-style-type: none"><p><a href="/person/">{{ username }}</a></p></li>
+            <li style="list-style-type: none"><p><a href="/quit/">退出</a></p></li>
+            <li style="list-style-type: none"><a style="color: green;font-size: 10px" href="{% url 'vip' %}">
+                <marquee behavior="scroll" direction="left">同学,充个VIP吧,很爽的呦！</marquee></a></li>
+        {% endifequal %}
     {% else %}
         <li style="list-style-type: none"><p><a href="/login/">立即登陆</a></p></li>
     {% endif %}
@@ -14,138 +22,135 @@
 
 {% block content %}
     <div class="content">
-        <h2 class="m_3">搜索结果</h2>
-        <div class="movie_top">
-            <nav class="col-md-9 movie_box">
-                <!-- Movie variant with time -->
-                {% for per in results %}
-                    <div class="movie movie-test movie-test-dark movie-test-left"
-                         style="max-height: 217px; min-height: 217px">
-                        <div class="movie__images">
-                            <a href="/single/{{ per.id }}/" class="movie-beta__link">
-                                <img style="max-width: 158px;max-height: 152px;min-width: 158px;min-height: 152px"
-                                     alt="" src="{{ per.slink }}" class="img-responsive" alt=""/>
-                            </a>
-                        </div>
-                        <div class="movie__info">
-                            <a href="/single/{{ per.id }}/" class="movie__title">{{ per.name }}
-                                ({{ per.release_time | date:'Y' }}) </a>
-                            <p class="movie__time">{{ per.length }}分钟</p>
-                            <p class="movie__option">
-                                {% for le in per.s_lead %}
-                                    {{ le.name }}&nbsp;/
-                                {% endfor %}
-                            </p>
-                            <ul class="list_6">
-                                <li><i class="icon1"> </i>
-                                    <p>{{ per.like_count }}</p></li>
-                                <li><i class="icon3"> </i>
-                                </li>
-                                <li>评分:<p>{{ per.mark }}</p></li>
+            <h2 class="m_3">搜索结果</h2>
+                <div class="movie_top">
+                    <nav class="col-md-9 movie_box">
+                        <!-- Movie variant with time -->
+                        {% for per in results %}
+                            <div class="movie movie-test movie-test-dark movie-test-left" style="max-height: 217px; min-height: 217px">
+                                <div class="movie__images">
+                                    <a href="/single/{{ per.id }}/" class="movie-beta__link">
+                                        <img style="max-width: 158px;max-height: 152px;min-width: 158px;min-height: 152px" alt="" src="{{ per.slink }}" class="img-responsive" alt=""/>
+                                    </a>
+                                </div>
+                                <div class="movie__info">
+                                    <a href="/single/{{ per.id }}/" class="movie__title">{{ per.name }} ({{ per.release_time | date:'Y' }}) </a>
+                                    <p class="movie__time">{{ per.length }}分钟</p>
+                                    <p class="movie__option">
+                                        {% for le in per.s_lead %}
+                                            {{ le.name }}&nbsp;/
+                                        {% endfor %}
+                                    </p>
+                                    <ul class="list_6">
+                                        <li><i class="icon1"> </i>
+                                            <p>{{ per.like_count }}</p></li>
+                                        <li><i class="icon3"> </i>
+                                            </li>
+                                        <li>评分:<p>{{ per.mark }}</p></li>
+                                        <div class="clearfix"></div>
+                                    </ul>
+                                </div>
                                 <div class="clearfix"></div>
-                            </ul>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                {% endfor %}
-
-                <!---->
-                <!-- Movie variant with time -->
-                <!-- Movie variant with time -->
-
-
-                <div class="clearfix"></div>
-                <div aria-label="Page navigation">
-                    <!--<span class="step-links">-->
-                    <ul class="pagination" style="display: block">
-                        {% if results.has_previous %}
-                            <li>
-                                <a href="?page={{ results.previous_page_number }}" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-
-                        {% for pg in results.paginator.page_range %}
-                            {% if results.number == pg %}
-                                <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
-                            {% else %}
-                                <li><a href="?page={{ pg }}">{{ pg }}</a></li>
-                            {% endif %}
+                            </div>
                         {% endfor %}
 
-                        <!--<span class="current">-->
-                        <!--Page {{ results.number }} of {{ results.paginator.num_pages }}.-->
-                        <!--</span>-->
+                        <!---->
+                        <!-- Movie variant with time -->
+                        <!-- Movie variant with time -->
 
-                        {% if results.has_next %}
-                            <li>
-                                <a href="?page={{ results.next_page_number }}" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                        <!--</span>-->
-                    </ul>
-                </div>
-                <!-- Movie variant with time -->
-        </div>
-        <div class="col-md-3">
-            {% for side in side_recommend %}
-                <div class="movie_img">
-                    <div class="grid_2">
-                        <a href="/single/{{ side.id }}/"><img style="width: 241px; height: 222px;"
-                                                              src="{{ side.new_link }}" class="img-responsive"
-                                                              alt=""></a>
-                        <div class="caption1">
-                            <ul class="list_5 list_7">
-                                <li><i class="icon5"> </i>
-                                    <p>{{ side.like_count }}</p></li>
+
+                        <div class="clearfix"></div>
+                        {% if search_list.count__gt == 6 %}
+                        <div aria-label="Page navigation">
+                            <!--<span class="step-links">-->
+                            <ul class="pagination" style="display: block">
+                                {% if results.has_previous %}
+                                    <li>
+                                        <a href="?page={{ results.previous_page_number }}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for pg in results.paginator.page_range %}
+                                    {% if results.number == pg %}
+                                        <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+                                    {% else %}
+                                        <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!--<span class="current">-->
+                                    <!--Page {{ results.number }} of {{ results.paginator.num_pages }}.-->
+                                <!--</span>-->
+
+                                {% if results.has_next %}
+                                    <li>
+                                        <a href="?page={{ results.next_page_number }}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            <!--</span>-->
                             </ul>
-                            <a href="/single/{{ side.id }}/"><p class="m_3">{{ side.name }}</p></a>
                         </div>
+                    {% endif %}
+                        <!-- Movie variant with time -->
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="clearfix"></div>
-        <!--</div>-->
-        <h1 class="recent">测试广告</h1>
-        <ul id="flexiselDemo3">
-            {% for ad in ad_list %}
-                <li><img src="/uploads/{{ ad.pic }}" class="img-responsive"/>
-                    <div class="grid-flex"><a href="{{ ad.link }}">{{ ad.name }}</a>
-                        <p>{{ ad.edit_time | date:'Y.m.d' }} | {{ ad.edit_time | date:'H.m' }}</p></div>
-                </li>
-            {% endfor %}
-        </ul>
-        <script type="text/javascript">
-            $(window).load(function () {
-                $("#flexiselDemo3").flexisel({
-                    visibleItems: 4,
-                    animationSpeed: 1000,
-                    autoPlay: true,
-                    autoPlaySpeed: 3000,
-                    pauseOnHover: true,
-                    enableResponsiveBreakpoints: true,
-                    responsiveBreakpoints: {
-                        portrait: {
-                            changePoint: 480,
-                            visibleItems: 1
-                        },
-                        landscape: {
-                            changePoint: 640,
-                            visibleItems: 2
-                        },
-                        tablet: {
-                            changePoint: 768,
-                            visibleItems: 3
-                        }
-                    }
-                });
+                    <div class="col-md-3">
+                        {% for side in side_recommend %}
+                            <div class="movie_img">
+                                <div class="grid_2">
+                                    <a href="/single/{{ side.id }}/"><img style="width: 241px; height: 222px;" src="{{ side.new_link }}" class="img-responsive" alt=""></a>
+                                    <div class="caption1">
+                                        <ul class="list_5 list_7">
+                                            <li><i class="icon5"> </i>
+                                                <p>{{ side.like_count }}</p></li>
+                                        </ul>
+                                        <a href="/single/{{ side.id }}/"><p class="m_3">{{ side.name }}</p></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="clearfix"></div>
+                <!--</div>-->
+{#                <h1 class="recent">vip专区</h1>#}
+                    <ul id="flexiselDemo3">
+                        {% for ad in ad_list %}
+                            <li><img src="/uploads/{{ ad.pic }}" class="img-responsive"/>
+                                <div class="grid-flex"><a href="{{ ad.link }}">{{ ad.name }}</a>
+                                    <p>{{ ad.edit_time | date:'Y.m.d' }} | {{ ad.edit_time | date:'H.m' }}</p></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <script type="text/javascript">
+                        $(window).load(function () {
+                            $("#flexiselDemo3").flexisel({
+                                visibleItems: 4,
+                                animationSpeed: 1000,
+                                autoPlay: true,
+                                autoPlaySpeed: 3000,
+                                pauseOnHover: true,
+                                enableResponsiveBreakpoints: true,
+                                responsiveBreakpoints: {
+                                    portrait: {
+                                        changePoint: 480,
+                                        visibleItems: 1
+                                    },
+                                    landscape: {
+                                        changePoint: 640,
+                                        visibleItems: 2
+                                    },
+                                    tablet: {
+                                        changePoint: 768,
+                                        visibleItems: 3
+                                    }
+                                }
+                            });
 
-            });
-        </script>
-        <script type="text/javascript" src="{% static 'js/jquery.flexisel.js' %}"></script>
-    </div>
+                        });
+                    </script>
+                    <script type="text/javascript" src="{% static 'js/jquery.flexisel.js' %}"></script>
+        </div>
 {% endblock %}

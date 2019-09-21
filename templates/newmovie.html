@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+<style>
+
+    @media screen and (max-width: 640px) {
+      #player-container-id {
+        width: 100%;
+        height: 270px;
+      position: absolute;
+          left: 700px;
+          top: 900px;
+          content: 'true';
+      }
+    }
+    /* 设置logo在高分屏的显示样式 */
+    @media only screen and (min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 2) {
+      .tcp-logo-img {
+        width: 50%;
+      }
+    }
+  </style>
+<!-- 设置播放器容器 -->
+<center>
+    <p>&nbsp;&nbsp;&nbsp;</p>
+    <p>&nbsp;&nbsp;&nbsp;</p>
+    <p>&nbsp;&nbsp;&nbsp;</p>
+<video id="player-container-id" preload="auto" width="854" height="480"  playsinline webkit-playsinline>
+</video></center>
+<input type="hidden" id="">{{ playmovie.imdb_link }}
+<!--
+注意事项：
+* 播放器容器必须为 video 标签
+* player-container-id 为播放器容器的ID，可自行设置
+* 播放器区域的尺寸请按需设置，建议通过 css 进行设置，通过css可实现容器自适应等效果
+* playsinline webkit-playsinline 这几个属性是为了在标准移动端浏览器不劫持视频播放的情况下实现行内播放，此处仅作示例，请按需使用
+* 设置 x5-playsinline 属性会使用 X5 UI 的播放器
+-->
+<script>
+  var fff = JSON.parse('{{ ffid|safe }}');
+  var player = TCPlayer('player-container-id', { // player-container-id 为播放器容器ID，必须与html中一致
+    fileID:fff, // 请传入需要播放的视频filID 必须
+    appID: '1259695268' // 请传入点播账号的appID 必须
+    //其他参数请在开发文档中查看
+  });
+  alert(fileID)
+</script>
+</body>
+{% endblock %}

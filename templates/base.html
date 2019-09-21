@@ -2,7 +2,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    {% block a %}
+
+    {% endblock %}
     <title>蟹老板--一个神奇的电影网</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="Movie_store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
@@ -14,18 +20,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     function hideURLbar() {
         window.scrollTo(0, 1);
     } </script>
+
+    <!-- 引入播放器 css 文件 -->
+  <link href="//imgcache.qq.com/open/qcloud/video/tcplayer/tcplayer.min.css" rel="stylesheet">
+  <!-- 如需在IE8、9浏览器中初始化播放器，浏览器需支持Flash并在页面中引入 -->
+  <!--[if lt IE 9]>
+  <script src="//imgcache.qq.com/open/qcloud/video/tcplayer/ie8/videojs-ie8.js"></script>
+  <![endif]-->
+  <!-- 如果需要在 Chrome Firefox 等现代浏览器中通过H5播放hls，需要引入 hls.js -->
+  <script src="//imgcache.qq.com/open/qcloud/video/tcplayer/libs/hls.min.0.12.4.js"></script>
+  <!-- 引入播放器 js 文件 -->
+  <script src="//imgcache.qq.com/open/qcloud/video/tcplayer/tcplayer.min.js"></script>
+
+
     <link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all"/>
     <!-- start plugins -->
     <script type="text/javascript" src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
-    <!--{#    <link href='http://fonts.useso.com/css?family=Roboto+Condensed:100,200,300,400,500,600,700,800,900' rel='stylesheet'#}-->
-    <!--{#          type='text/css'>#}-->
+<!--{#    <link href='http://fonts.useso.com/css?family=Roboto+Condensed:100,200,300,400,500,600,700,800,900' rel='stylesheet'#}-->
+<!--{#          type='text/css'>#}-->
 
     <!--css-->
     {% block styles %}
-        <style>a {
-            text-decoration: none
-        }</style>
+        <style>a{text-decoration:none}</style>
 
     {% endblock %}
 
@@ -46,7 +63,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     </script>
 
-    <!--js-->
+        <!--js-->
     {% block scripts %}
     {% endblock %}
 
@@ -58,7 +75,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="col-sm-3 logo">
                 <a href="/" style="font-size: 26px; text-decoration: none; color: #D8232A">
                     <img src="{% static 'images/logo11.png' %}" alt="" width="70px"/>
-                    <img src="{% static 'images/logo1.png' %}" alt="" width="100px"/>
+                    <img src="{% static 'images/logo1.png' %}" alt="" width="120px"/>
                 </a>
             </div>
             <div class="col-sm-6 nav">
@@ -80,7 +97,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </ul>
             </div>
             <div class="col-sm-3 header_right">
-                <ul class="header_right_box">
+                <ul class="header_right_box" style="margin-top: 10px">
                     {% block mine %}
 
                     {% endblock %}
@@ -91,7 +108,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="clearfix"></div>
         </div>
 
-        {#        轮播图#}
+{#        轮播图#}
         {% block coverpic %}
         {% endblock %}
 
@@ -112,12 +129,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="gp-container">
                 <div class="footer-widget footer-1">
                     <div class="wpb_wrapper">
-                        {#                        <img src="{% static 'images/f_logo.png' %}" alt=""/>#}
-                        <span style="font-size: 26px">See视频</span>
+{#                        <img src="{% static 'images/f_logo.png' %}" alt=""/>#}
+                        <span style="font-size: 26px">Krabs</span>
                     </div>
                     <br>
-                    <p>我还不够完美</p>
-                    <p class="text">所以需要继续努力</p>
+                    <p>蟹老板电影网</p>
+                    <p class="text">一个神奇的网站</p>
                 </div>
                 <div class="footer_box">
                     <div class="col_1_of_3 span_1_of_3">
@@ -127,22 +144,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </ul>
                     </div>
                     <div class="col_1_of_3 span_1_of_3">
-                        <h3>关于丹丹</h3>
+                        <h3>关于我们</h3>
                         <ul class="first">
-                            <li><a href="#">- 联盟</a></li>
-                            <li><a href="#">- 猫</a></li>
-                            {#                            <li><a href="#">Specials</a></li>#}
+                            <li><a href="#">- 蟹老板</a></li>
+                            <li><a href="#">- 蟹老板影视</a></li>
+{#                            <li><a href="#">Specials</a></li>#}
                         </ul>
                     </div>
                     <div class="col_1_of_3 span_1_of_3">
-                        <h3>联系我</h3>
+                        <h3>联系我们</h3>
                         <ul class="first">
-                            <li><a href="http://web2.qq.com/">- Q &nbsp;&nbsp;3124696713</a></li>
-                            <li><a href="#">- E &nbsp;&nbsp;Cute_dandan@163.com</a></li>
+                            <li><a href="#">- Q &nbsp;&nbsp;123456789</a></li>
+                            <li><a href="#">- E &nbsp;&nbsp;xieboss@krabs.com</a></li>
                         </ul>
                         <div class="copy">
-                            <p>Copyright &copy; 2017 <a target="_blank"
-                                                        href="http://idandan.vip/">丹丹的个人简介</a>
+                            <p>Copyright &copy; 2019 <a target="_blank"
+                                                                                         href="http://idandan.vip/">蟹老板的电影网</a>
                             </p>
                         </div>
                     </div>
