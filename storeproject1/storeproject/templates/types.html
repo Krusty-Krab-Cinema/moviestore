@@ -1,6 +1,62 @@
 {% extends 'index.html' %}
 {% block a %}
-    <div style="margin-left: 300px;font-size: 80px" >hahahaha <br>types</div>
+    <div style="margin-left: 300px;font-size: 80px" >
+        <div>
+         <p>&nbsp;</p> <p>&nbsp;</p> <p>&nbsp;</p>
+            <table border="1" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="66px" class="tdColor tdC">序号</td>
+                    {% for type in types %}
+                        <td width="100px" class="tdColor tdC">{{ type.id }}
+                            <a href="{% url 'deltype' type.id %}"><img class="operation" src="/static/img/delete.png"></a>
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr height="40px">
+                    <td>电影类型</td>
+                    {% for type in types %}
+                        <td>{{ type.style_type }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+            <p>&nbsp;</p>
+            <form action="{% url 'types' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name = 'addtype'>
+                <button type="submit" name="sub" value="mv">提交</button>
+                <span style="color: red">{% if error_msg %}{{ error_msg }}{% endif %}</span>
+            </form>
+            <p>&nbsp;</p>
 
+        </div>
+        <div>
+            <br><br><br>
+{#        <span><h1>今日开通会员个数</h1></span>#}
+            <table border="1" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="66px" class="tdColor tdC" height="80px">序号</td>
+                    {% for ct in cts %}
+                        <td width="100px" class="tdColor tdC">{{ ct.id }}
+                            <a href="{% url 'deltype' ct.id %}"><img class="operation" src="/static/img/delete.png"></a>
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr height="40px">
+                    <td>地区分类</td>
+                    {% for ct in cts %}
+                        <td>{{ ct.country }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+        <p>&nbsp;</p>
+            <form action="{% url 'types' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name = 'ct'>
+                <button type="submit" name="sub" value="ct">提交</button>
+                <span style="color: red">{% if error_msg2 %}{{ error_msg2 }}{% endif %}</span>
+            </form>
+            <p>&nbsp;</p>
+        </div>
 
+    </div>
 {% endblock %}

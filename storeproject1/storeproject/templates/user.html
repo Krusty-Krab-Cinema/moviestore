@@ -20,40 +20,69 @@
 
 		<div class="page">
 			<!-- user页面样式 -->
-			<div class="connoisseur" >
-				<div class="conform">
-					<form>
-						<div class="cfD">
-							<input class="userinput" type="text" placeholder="输入用户名" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<input class="userinput vpr" type="text" placeholder="输入用户密码" />
-							<button class="userbtn">添加</button>
-						</div>
-					</form>
-				</div>
+{#			<div class="connoisseur" >#}
+{#				<div class="conform">#}
+{#					<form>#}
+{#						<div class="cfD">#}
+{#							<input class="userinput" type="text" placeholder="输入用户名" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;#}
+{#							<input class="userinput vpr" type="text" placeholder="输入用户密码" />#}
+{#							<button class="userbtn">添加</button>#}
+{#						</div>#}
+{#					</form>#}
+{#				</div>#}
 				<!-- user 表格 显示 -->
+            <br><br><br>
 				<div class="conShow">
 					<table border="1" cellspacing="0" cellpadding="0">
-						<tr>
+						<tr height="40px">
 							<td width="66px" class="tdColor tdC">序号</td>
-							<td width="335px" class="tdColor">电影名</td>
-							<td width="300px" class="tdColor">导演：主演</td>
+							<td width="200px" class="tdColor">电影名</td>
+							<td width="200px" class="tdColor">导演</td>
                             <td width="200px" class="tdColor">上映时间</td>
-{#							<td width="630px" class="tdColor">简介</td>#}
-							<td width="130px" class="tdColor">操作</td>
+							<td width="100px" class="tdColor">时长</td>
+                            <td width="185px" class="tdColor">电影类型</td>
+							<td width="80px" class="tdColor">操作</td>
 						</tr>
-                        {% for mv in mvs %}
+                        {% for mv in pagination %}
                             {% if mv.is_delete == 0 %}
 						<tr height="40px">
 							<td>{{ mv.id }}</td>
 							<td>{{ mv.name }}</td>
-							<td>{{ mv.director }}:{{ mv.lead_role.name }}</td>
+							<td>{{ mv.director }}</td>
                             <td>{{ mv.release_time }}</td>
-{#							<td>{{ mv.summary }}</td>#}
+							<td>{{ mv.length }}分钟</td>
+                            <td>{% if mv.is_vipfilm == 1 %}vip电影{% else %}普通的电影
+
+                            {% endif %}
+                            </td>
 							<td><a href="{% url 'delmv' mv.id %}"><img class="operation"
 									src="/static/img/delete.png"></a> </td>
 						</tr>{% endif %}{% endfor %}
 					</table>
-					<div class="paging">此处是分页</div>
+{#					<div class="paging">此处是分页</div>#}
+                    <br><br>
+                    <div class="paging">
+                        {% if pagination.has_previous %}
+                        <a href=" {% url 'user' 1 %}">首页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'user' pagination.previous_page_number %}" >上一页</a>
+                        {% else %}
+                            <a>首页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a >上一页</a>
+                        {% endif %}
+                        &nbsp;&nbsp;{{ pagination.number }}&nbsp;&nbsp;
+                        {% if pagination.has_next %}
+                        <a href="{% url 'user' pagination.next_page_number %}" >下一页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'user' paginator.num_pages %}">尾 页</a>
+                        {% else %}
+                            <a >下一页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a>尾页</a>
+                        {% endif %}
+                        <a>共{{ paginator.num_pages }}页</a>
+                    </div>
 				</div>
 				<!-- user 表格 显示 end-->
 			</div>

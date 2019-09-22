@@ -2,58 +2,86 @@
 {#<html xmlns="http://www.w3.org/1999/xhtml">#}
 {#<head>#}
 {#<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />#}
-{#<title>广告-有点</title>#}
+{#<title>广告-有点</title>#}{% extends 'index.html' %}
+{#{% block ys %}#}
 {#<link rel="stylesheet" type="text/css" href="/static/css/css.css" />#}
-{#<script type="text/javascript" src="/static/js/jquery.min.js"></script>#}
-{#<!-- <script type="text/javascript" src="js/page.js" ></script> -->#}
+{#<script type="text/javascript" src="/static/js/jquery.min.js"></script>{% endblock %}#}
+<!-- <script type="text/javascript" src="js/page.js" ></script> -->
 {#</head>#}
-{% extends 'index.html' %}
+
 {% block a %}
 <body>
 	<div id="pageAll"  style="margin-left: 300px;">
 		<div class="pageTop">
 			<div class="page">
-				<img src="/static/img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
-					href="#">公共管理</a>&nbsp;-</span>&nbsp;广告管理
+				<img src="/static/img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;电影管理-</span>&nbsp;各种操作
 			</div>
 		</div>
 		<div class="page">
 			<!-- banner页面样式 -->
 			<div class="banner">
-				<div class="add">
-					<a class="addA" href="banneradd.html" style="font-size: 50px">添加广告</a>
-				</div>
+
 				<!-- banner 表格 显示 -->
+                <br><br><br>
 				<div class="banShow">
-					<table border="1" cellspacing="0" cellpadding="0">
-						<tr>
+					<table border="1" cellspacing="0" cellpadding="0" >
+{#                        style="background: url(/static/img/fff.gif)"#}
+						<tr height="40px">
 							<td width="66px" class="tdColor tdC">序号</td>
 							<td width="315px" class="tdColor">名称</td>
 							<td width="308px" class="tdColor">导演</td>
-							<td width="450px" class="tdColor">是否轮播</td>
+							<td width="250px" class="tdColor">是否轮播</td>
+                            <td width="200px" class="tdColor">仅vip可看</td>
 							<td width="215px" class="tdColor">是否加入侧边栏</td>
-							<td width="180px" class="tdColor">删除</td>
+							<td width="180px" class="tdColor">假删除</td>
 							<td width="125px" class="tdColor">真删除</td>
 						</tr>
-                        {% for mv in mvs %}
-						<tr>
+                        {% for mv in pagination %}
+						<tr height="40px">
 							<td>{{ mv.id }}</td>
 							<td>{{ mv.name }}</td>
 							<td>{{ mv.director }}</td>
-							<td>{% if mv.is_carousel == 1 %}<a href="">取消轮播</a>
-                                {% else %}<a href="">轮播</a>
-							{% endif %}</td>
-							<td>{% if mv.is_sidebar == 1 %}<a href="">取消加入</a>
-                                {% else %}<a href="">加入</a>
-							{% endif %}</td>
-							<td>1</td>
-							<td><a href="banneradd.html"><img class="operation"
-									src="/static/img/update.png"></a> <img class="operation delban"
-								src="/static/img/delete.png"></td>
+							<td><a style="text-decoration: none" href="{% url 'carousel' mv.id %}">{% if mv.is_carousel == 1 %}取消轮播
+                                {% else %}轮播{% endif %}</a>
+							</td>
+                            <td>
+                                <a style="text-decoration: none" href="{% url 'viplook' mv.id %}">{% if mv.is_vipfilm == 1 %}取消
+                                {% else %}添加{% endif %}</a>
+                            </td>
+							<td><a style="text-decoration: none" href="{% url 'sidebar' mv.id %}">{% if mv.is_sidebar == 1 %}取消加入
+                                {% else %}加入{% endif %}</a>
+							</td>
+							<td><a style="text-decoration: none" href="{% url 'jiadel' mv.id %}">{% if mv.is_delete == 1 %}恢复电影
+                                {% else %}删除电影{% endif %}</a>
+							</td>
+							<td><a style="text-decoration: none" href="{% url 'realdel' mv.id %}"><img class="operation"
+									src="/static/img/delete.png"></a> </td>
 						</tr>{% endfor %}
 
 					</table>
-					<div class="paging">此处是分页</div>
+                    <br><br>
+					<div class="paging">
+                        {% if pagination.has_previous %}
+                        <a href=" {% url 'banner' 1 %}">首页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'banner' pagination.previous_page_number %}" >上一页</a>
+                        {% else %}
+                            <a>首页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a >上一页</a>
+                        {% endif %}
+                        &nbsp;&nbsp;{{ pagination.number }}&nbsp;&nbsp;
+                        {% if pagination.has_next %}
+                        <a href="{% url 'banner' pagination.next_page_number %}" >下一页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'banner' paginator.num_pages %}">尾 页</a>
+                        {% else %}
+                            <a >下一页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a>尾页</a>
+                        {% endif %}
+                        <a>共{{ paginator.num_pages }}页</a>
+                    </div>
 				</div>
 				<!-- banner 表格 显示 end-->
 			</div>

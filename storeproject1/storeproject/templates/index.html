@@ -4,28 +4,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>首页-有点</title>
+
 </head>
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>头部-有点</title>
 <link rel="stylesheet" type="text/css" href="/static/css/public.css">
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/public.js"></script>
+<script type="text/javascript" src="/static/js/public.js"></script>{% block ys %}{% endblock %}
 </head>
 
 <body>
 	<!-- 头部 -->
 	<div class="head">
 		<div class="headL">
-			<img class="headLogo" src="/static/img/headLogo.png">
+			<img class="headLogo" style="height: 50px;" src="/static/img/hanbao.png">
 		</div>
 		<div class="headR">
 			<p class="p1">
-				欢迎，
+				欢迎管理员
 				<!--?php echo cookie('name')?-->
 			</p>
 			<p class="p2">
-				<a href="#" class="resetPWD">重置密码</a>&nbsp;&nbsp;<a href="{:U('Admin/Index/exit')}" class="goOut">退出</a>
+{#				<a href="#" class="resetPWD">重置密码</a>&nbsp;&nbsp;<a href="{:U('Admin/Index/exit')}" class="goOut">退出</a>#}
 			</p>
 		</div>
 		<!-- onclick="{if(confirm(&quot;确定退出吗&quot;)){return true;}return false;}" -->
@@ -48,7 +49,7 @@
     <div class="container">
 
 		<div class="leftsidebar_box">
-			<a href="main.html" target="main"><div class="line">
+			<a href="{% url 'main' %}" target="main"><div class="line">
 					<img src="/static/img/coin01.png">&nbsp;&nbsp;首页
 				</div></a>
 			<!-- <dl class="system_log">
@@ -60,7 +61,7 @@
 					<img class="icon1" src="/static/img/coin03.png"><img class="icon2" src="/static/img/coin04.png"> 网站管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="{% url 'manager' %}" target="main">管理员管理</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="{% url 'manager' 1 %}" target="main">管理员管理</a><img class="icon5" src="/static/img/coin21.png">
 				</dd>
 			</dl>
 			<dl class="system_log">
@@ -68,10 +69,10 @@
 					<img class="icon1" src="/static/img/coin05.png"><img class="icon2" src="/static/img/coin06.png"> 会员管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="{% url 'vip' %}" target="main">用户管理</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="{% url 'vip' 1%}" target="main">用户管理</a><img class="icon5" src="/static/img/coin21.png">
 				</dd>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="{% url 'opinion' %}" target="main">评论管理</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="{% url 'opinion' 1%}" target="main">评论管理</a><img class="icon5" src="/static/img/coin21.png">
 				</dd>
 			</dl>
 			<dl class="system_log">
@@ -79,8 +80,8 @@
 					<img class="icon1" src="/static/img/coin07.png"><img class="icon2" src="/static/img/coin08.png"> 影片管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'user' %}" target="main" class="cks">影片列表</a><img class="icon5" src="/static/img/coin21.png">
-                    <img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="/static/opinion.html" target="main">上线电影</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'user' 1%}" target="main" class="cks">影片列表</a><img class="icon5" src="/static/img/coin21.png">
+{#                    <img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a class="cks" href="{% url 'addmv' %}" target="main">上线电影</a><img class="icon5" src="/static/img/coin21.png">#}
 				</dd>
 			</dl>
 			<dl class="system_log">
@@ -88,15 +89,15 @@
 					<img class="icon1" src="/static/img/coin10.png"><img class="icon2" src="/static/img/coin09.png"> 电影管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'banner' %}" target="main" class="cks">各种操作</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'banner' 1%}" target="main" class="cks">各种操作</a><img class="icon5" src="/static/img/coin21.png">
 				</dd>
 			</dl>
 			<dl class="system_log">
 				<dt>
-					<img class="icon1" src="/static/img/coin11.png"><img class="icon2" src="/static/img/coin12.png"> 友情链接管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
+{#					<img class="icon1" src="/static/img/coin11.png"><img class="icon2" src="/static/img/coin12.png"> 友情链接管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">#}
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="/static/topic.html" target="main" class="cks">链接设置</a><img class="icon5" src="/static/img/coin21.png">
+{#					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'flink' %}" target="main" class="cks">链接设置</a><img class="icon5" src="/static/img/coin21.png">#}
 				</dd>
 			</dl>
 			<dl class="system_log">
@@ -104,7 +105,7 @@
 					<img class="icon1" src="/static/img/coin14.png"><img class="icon2" src="/static/img/coin13.png"> 类别管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="/static/wish.html" target="main" class="cks">管理类别</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'types' %}" target="main" class="cks">管理类别</a><img class="icon5" src="/static/img/coin21.png">
 				</dd>
 			</dl>
 			<dl class="system_log">
@@ -112,7 +113,7 @@
 					<img class="icon1" src="/static/img/coin15.png"><img class="icon2" src="/static/img/coin16.png">挣钱管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="/static/appointment.html" target="main" class="cks">用户充钱信息</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'domoney' %}" target="main" class="cks">用户充钱信息</a><img class="icon5" src="/static/img/coin21.png">
 				</dd>
 			</dl>
 {#			<dl class="system_log">#}
@@ -128,10 +129,10 @@
 					<img class="icon1" src="/static/img/coinL1.png"><img class="icon2" src="/static/img/coinL2.png"> 系统管理<img class="icon3" src="/static/img/coin19.png"><img class="icon4" src="/static/img/coin20.png">
 				</dt>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="/static/changepwd.html" target="main" class="cks">修改密码</a><img class="icon5" src="/static/img/coin21.png">
+{#					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="/static/changepwd.html" target="main" class="cks">修改密码</a><img class="icon5" src="/static/img/coin21.png">#}
 				</dd>
 				<dd>
-					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="/static/log.html" target="_parent" class="cks">退出</a><img class="icon5" src="/static/img/coin21.png">
+					<img class="coin11" src="/static/img/coin111.png"><img class="coin22" src="/static/img/coin222.png"><a href="{% url 'login' %}" target="_parent" class="cks">退出</a><img class="icon5" src="/static/img/coin21.png">
 				</dd>
 			</dl>
 

@@ -24,6 +24,9 @@
 {#</script>#}
 {#</head>#}
 {% extends 'index.html' %}
+{#{% block ys %}#}
+{#<link rel="stylesheet" type="text/css" href="/static/css/css.css" />#}
+{#<script type="text/javascript" src="/static/js/jquery.min.js"></script>{% endblock %}#}
 {% block a %}
 <body>
 	<div id="pageAll" style="margin-left: 300px;">
@@ -37,35 +40,36 @@
 		<div class="page">
 			<!-- vip页面样式 -->
 			<div class="vip">
-				<div class="conform">
-					<form>
-						<div class="cfD">
-							时间段：<input class="vinput mh_date" type="text" readonly="true" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<input class="vinput mh_date" type="text" readonly="true" />
-						</div>
-						<div class="cfD">
-							<input class="addUser" type="text" placeholder="输入用户名/ID/邮箱" />
-							<button class="button">搜索</button>
-							<a class="addA addA1" href="vipadd.html">新增会员+</a> <a
-								class="addA addA1 addA2" href="vipadd.html">密码重置</a>
-						</div>
-					</form>
-				</div>
+{#				<div class="conform">#}
+{#					<form>#}
+{#						<div class="cfD">#}
+{#							时间段：<input class="vinput mh_date" type="text" readonly="true" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;#}
+{#							<input class="vinput mh_date" type="text" readonly="true" />#}
+{#						</div>#}
+{#						<div class="cfD">#}
+{#							<input class="addUser" type="text" placeholder="输入用户名/ID/邮箱" />#}
+{#							<button class="button">搜索</button>#}
+{#							<a class="addA addA1" href="vipadd.html">新增会员+</a> <a#}
+{#								class="addA addA1 addA2" href="vipadd.html">密码重置</a>#}
+{#						</div>#}
+{#					</form>#}
+{#				</div>#}
 				<!-- vip 表格 显示 -->
-				<div class="conShow">
-					<table border="1" cellspacing="0" cellpadding="0">
-						<tr>
+                <br><br><br><div class="conShow">
+                <table border="1" cellspacing="0" cellpadding="0">
+                    <tr height="40px">
 							<td width="66px" class="tdColor tdC">序号</td>
 {#							<td width="250px" class="tdColor">头像</td>#}
 							<td width="188px" class="tdColor">姓名</td>
-							<td width="525px" class="tdColor">会员类型</td>
-							<td width="470px" class="tdColor">邮箱账号</td>
+							<td width="425px" class="tdColor">会员类型</td>
+							<td width="370px" class="tdColor">邮箱账号</td>
 {#							<td width="290px" class="tdColor">会员余额</td>#}
 {#							<td width="282px" class="tdColor">注册时间</td>#}
-							<td width="410px" class="tdColor">操作</td>
+							<td width="210px" class="tdColor">操作</td>
+                            <td width="400px" class="tdColor">是否置为管理员</td>#}
 						</tr>
-                        {% for user in users %}
-						<tr>
+                        {% for user in pagination %}
+						<tr height="40px">
 							<td>{{ user.id }}</td>
 {#							<td><div class="onsImg onsImgv">#}
 {#									<img src="/static/img/banimg.png">#}
@@ -82,9 +86,34 @@
 {#							<td>总监</td>#}
 							<td><a href="{% url 'delvip' user.id %}"><img class="operation"
 									src="/static/img/delete.png"></a> </td>
+                        <td><a style="text-decoration: none" href="{% url 'addmanager' user.id %}">{% if user.is_superuser == 1 %}取消管理员身份
+                                {% else %}提升为管理员身份{% endif %}</a></td>
 						</tr>{% endfor %}
 					</table>
-					<div class="paging">此处是分页</div>
+{#					<div class="paging">此处是分页</div>#}
+                    <br><br>
+                <div class="paging">
+                        {% if pagination.has_previous %}
+                        <a href=" {% url 'vip' 1 %}">首页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'vip' pagination.previous_page_number %}" >上一页</a>
+                        {% else %}
+                            <a>首页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a >上一页</a>
+                        {% endif %}
+                        &nbsp;&nbsp;{{ pagination.number }}&nbsp;&nbsp;
+                        {% if pagination.has_next %}
+                        <a href="{% url 'vip' pagination.next_page_number %}" >下一页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{% url 'vip' paginator.num_pages %}">尾 页</a>
+                        {% else %}
+                            <a >下一页</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a>尾页</a>
+                        {% endif %}
+                        <a>共{{ paginator.num_pages }}页</a>
+                    </div>
 				</div>
 				<!-- vip 表格 显示 end-->
 			</div>
