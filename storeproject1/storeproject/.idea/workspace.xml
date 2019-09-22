@@ -23,7 +23,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../bbs" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -105,7 +105,14 @@
       <workItem from="1568864813195" duration="1065000" />
       <workItem from="1568872337599" duration="257000" />
       <workItem from="1568872684442" duration="12811000" />
-      <workItem from="1568891588688" duration="3922000" />
+      <workItem from="1568891588688" duration="7434000" />
+      <workItem from="1568941433943" duration="4195000" />
+      <workItem from="1568946177876" duration="3370000" />
+      <workItem from="1568959822384" duration="7202000" />
+      <workItem from="1568982838100" duration="4133000" />
+      <workItem from="1568987129874" duration="425000" />
+      <workItem from="1569047758246" duration="15261000" />
+      <workItem from="1569118953061" duration="2533000" />
     </task>
     <servers />
   </component>
