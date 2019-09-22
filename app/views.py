@@ -1,8 +1,10 @@
 import datetime
 import json
 import time
+from random import Random
 
 from dateutil.relativedelta import relativedelta
+from django.core.mail import send_mail
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,7 +13,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.db import models
 from django.urls import reverse
 
-from moviestore.settings import APP_PRIVATE_KEY, ALIPAY_PUBLIC_KEY
+from gradesign.settings import APP_PRIVATE_KEY, ALIPAY_PUBLIC_KEY
 from .models import Movie, User, Comment, Advertise
 
 # Create your views here.
@@ -21,6 +23,7 @@ def index(request):
     # return render(request, 'base.html')
     key = request.COOKIES.get('usernameKey')
     username = request.session.get(key, 0)
+    print(username)
     if username != 0:
         user=User.objects.get(username=username)
         print(type(user.is_vip))
@@ -90,8 +93,7 @@ def single(request, mid):
 
     # single_movie.single_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + \
     #                            str(single_movie.cover_link).split('_')[0] + '.webp'
-    single_movie.single_link = '/static/pics/' + \
-                               str(single_movie.cover_link).split('_')[0] + '.jpg'
+    single_movie.single_link = '/static/pics/' +str(single_movie.cover_link).split('_')[0] + '.jpg'
     if single_movie.single_link.count('.jpg') > 1:
         single_movie.single_link = single_movie.single_link[: len(single_movie.single_link) - 5]
 
@@ -200,8 +202,7 @@ def movie(request, tid):
         # s.new_link = 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/' + str(s.cover_link).split('_')[
         #     0] + '.webp'
         # if s.new_link.count('.webp') > 1:
-        s.new_link = '/statics/pics/' + str(s.cover_link).split('_')[
-            0] + '.jpg'
+        s.new_link = '/statics/pics/' + str(s.cover_link).split('_')[0] + '.jpg'
         if s.new_link.count('.jpg') > 1:
             s.new_link = s.new_link[: len(s.new_link) - 5]
 
@@ -228,29 +229,25 @@ def login(request):
     else:
         nickname = request.POST.get('nickname')
         password = request.POST.get('password')
-
         # 查询用户是否存在
         try:
             u = User.objects.get(username=nickname)
         except User.DoesNotExist as e:
             return redirect('/login/')
-
         # 如果存在,验证密码是否正确
         if password != u.password:
             return redirect('/login/')
-
         # 登陆成功
         response = HttpResponseRedirect('/')
         token = make_password(nickname)
         u.token = token
         u.save()
         response.set_cookie('userToken', token)
-
         request.session['username'] = u.username
         response.set_cookie('usernameKey', 'username')
         if u.v_end < datetime.date.today():
-            u.update(is_vip=0)
-
+            # u.update(is_vip=0)
+            u.is_vip=0
         return response
 
 
@@ -386,11 +383,10 @@ def person(request):
 def user(request):
     key = request.COOKIES.get('usernameKey')
     usernameKey = request.session.get(key, 0)
-    key = request.COOKIES.get('usernameKey')
+    # key = request.COOKIES.get('usernameKey')
     username = request.session.get(key, 0)
     if username != 0:
         user=User.objects.get(username=username)
-
     try:
         username = request.GET.get('name')
         print(username, 'person')
@@ -398,11 +394,22 @@ def user(request):
     except:
         token = request.COOKIES.get('userToken')
         currentuser = User.objects.get(token=token).id
-
-    return render(request,'userinfo.html',{
-        'username':usernameKey,
-        'user':user
-    })
+        print(currentuser)
+    if request.method =='POST':
+        user = User.objects.get(id=currentuser)
+        pwd1= request.POST.get('password')
+        print(pwd1)
+        if user.password == pwd1:
+            repwd = request.POST.get('repassword')
+            user.password = repwd
+            user.save()
+        else:
+            error_msg='旧密码输入错误'
+            if error_msg :
+                print('1')
+            return render(request,'userinfo.html',locals())
+        return redirect('/user/')
+    return render(request,'userinfo.html',locals())
 
 def play(request,mid):
     userkey=request.GET.get('user')
@@ -489,3 +496,44 @@ def payit(request):
 
     # logout(request)
     return redirect(net)
+
+
+def getpass(request):
+    def random_str(numlength):
+        str = ''
+        chars = 'abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        length = len(chars) - 1
+        random = Random()
+        for i in range(numlength):
+            str += chars[random.randint(0, length)]
+        return str
+
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        print(email)
+        try:
+            a = User.objects.get(username=username)
+            print(a.email, type(a.email))
+            if a:
+                if a.email == email:
+                    print('a')
+                    num = a.id
+                    email_title = "找回密码"
+                    # 随机生成新密码
+                    number = random_str(8)
+
+                    email_body = "您的新密码为：{}，请用此密码登录，登录后不要忘记修改密码。".format(number)
+                    send_status = send_mail(email_title, email_body, "dyvandong@163.com", [request.POST.get('email'), ])
+                    print('aa')
+                    # 修改为默认密码
+                    a.password = number
+                    a.save()
+                    print('aaa')
+                    return render(request,'turn.html',{'getpass':1})
+                else:
+                    error_msg = '邮箱错误'
+        except:
+            error_msg = '用户不存在'
+            return render(request, 'getpass.html', locals())
+    return render(request, 'getpass.html', locals())
